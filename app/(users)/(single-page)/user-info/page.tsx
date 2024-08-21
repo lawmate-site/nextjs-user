@@ -20,15 +20,8 @@ import { findProductById } from "@/components/_service/product/product-service";
 const UserSingeInfoPage = () => {
   const dispatch = useDispatch();
   const [payments, setPayments] = useState([] as IPayment[]);
-  const currentUser = "user1";
   const [impUid, setImpUid] = useState<string | null>(null);
   const [user, setUser] = useState({} as IUser);
-  const lawyers = [
-    { id: "lawyer1", name: "Lawyer 1" },
-    { id: "lawyer2", name: "Lawyer 2" },
-    { id: "lawyer3", name: "Lawyer 3" },
-  ];
-
   const accessToken: string = parseCookies().accessToken;
   const [decodedToken, setDecodedToken] = useState({} as any);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -323,7 +316,6 @@ const UserSingeInfoPage = () => {
               )}
             </div>
           </div>
-          {/* <ChatList currentUser={user?.name || currentUser} lawyers={lawyers} /> */}
         </div>
       </div>
     </>

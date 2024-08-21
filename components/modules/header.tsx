@@ -9,8 +9,10 @@ import Image from "next/image";
 import { destroyCookie, parseCookies } from "nookies";
 import { lawyerLogout } from "../_service/lawyer/lawyer.service";
 import { jwtDecode } from "jwt-decode";
-import { userLogout } from "../_service/user/user.service";
+import { getUserById, userLogout } from "../_service/user/user.service";
 import { findIssueById } from "../_service/issue/issue-service";
+import ChatList from "../common/chat/ChatList";
+import { IUser } from "../_model/user/user";
 
 const Header = ({ isDropdownOpen, setIsDropdownOpen }: any) => {
   const dispatch = useDispatch();
@@ -20,7 +22,22 @@ const Header = ({ isDropdownOpen, setIsDropdownOpen }: any) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [decodedToken, setDecodedToken] = useState({} as any);
   const [role, setRole] = useState("");
+  const currentUser = "양동규";
+  const [user, setUser] = useState({} as IUser);
 
+  const getUser = async () => {
+    await dispatch(getUserById(decodedToken.id)).then((res: any) => {
+      setUser(res.payload);
+    });
+  }
+    const lawyers = [
+    { id: "김호주", name: "김호주 변호사" },
+    { id: "김호현", name: "김호현 변호사" },
+    { id: "김시온", name: "김시온 변호사" },
+    // { id: "박주하", name: "양동규 의뢰인" },
+    // { id: "김민정", name: "김민정 의뢰인" },
+    // { id: "박정관", name: "박정관 의뢰인" },
+  ];
   const afterLoginMenu = [
     {
       key: 1,
@@ -76,20 +93,20 @@ const Header = ({ isDropdownOpen, setIsDropdownOpen }: any) => {
     },
   ]);
 
-  const messageMenu = [
-    {
-      key: 1,
-      title: "첫번째 메시지 제목",
-      path: "/message/1",
-      sub: "일반 회원",
-    },
-    {
-      key: 2,
-      title: "두번째 메시지 제목",
-      path: "/message/2",
-      sub: "변호사 회원",
-    },
-  ];
+  // const messageMenu = [
+  //   {
+  //     key: 1,
+  //     title: "첫번째 메시지 제목",
+  //     path: "/message/1",
+  //     sub: "일반 회원",
+  //   },
+  //   {
+  //     key: 2,
+  //     title: "두번째 메시지 제목",
+  //     path: "/message/2",
+  //     sub: "변호사 회원",
+  //   },
+  // ];
 
   const boardMenu = [
     // {
@@ -322,7 +339,7 @@ const Header = ({ isDropdownOpen, setIsDropdownOpen }: any) => {
                 isDropdownOpen.message ? "visible" : "invisible"
               }`}
             >
-              {messageMenu.map((item: any) => (
+              {/* {messageMenu.map((item: any) => (
                 <button
                   key={item.key}
                   onClick={() => window.location.replace(item.path)}
@@ -330,7 +347,8 @@ const Header = ({ isDropdownOpen, setIsDropdownOpen }: any) => {
                 >
                   {item.title}
                 </button>
-              ))}
+              ))} */}
+              <ChatList currentUser={user?.name || currentUser} lawyers={lawyers} />
             </div>
           </div>
           <div className={`${rounded} flex flex-col relative`}>
